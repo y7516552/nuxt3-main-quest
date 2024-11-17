@@ -46,7 +46,7 @@ const onSlideChange = (e) => {
         @swiperslidechange="onSlideChange"
       >
         <swiper-slide
-          v-for="(num, index) in 3"
+          v-for="(num, index) in 5"
           :key="index"
         >
           <picture>

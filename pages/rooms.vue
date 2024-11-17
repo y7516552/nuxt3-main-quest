@@ -9,6 +9,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+
 const modules = ref([Autoplay, Navigation, Pagination]);
 
 
@@ -42,32 +43,35 @@ const roomImages = computed(() => {
 <template>
   <main>
     <section class="hero position-relative">
-      <swiper
-        :modules="modules"
-        :slides-per-view="1"
-        :pagination="true"
-        :autoplay="{
-          delay: 3000,
-          disableOnInteraction: false,
-        }"
-      >
-        <swiper-slide
-          v-for="(num, index) in 5"
-          :key="index"
+      <ClientOnly>
+
+        <swiper
+          :modules="modules"
+          :slides-per-view="1"
+          :pagination="true"
+          :autoplay="{
+            delay: 3000,
+            disableOnInteraction: false,
+          }"
         >
-          <picture>
-            <source
-              srcset="@/assets/images/home-hero.png"
-              media="(min-width:576px)"
-            >
-            <img
-              class="hero-img"
-              src="@/assets/images/home-hero-sm.png"
-              alt="hero banner"
-            >
-          </picture>
-        </swiper-slide>
-      </swiper>
+          <swiper-slide
+            v-for="(num, index) in 5"
+            :key="index"
+          >
+            <picture>
+              <source
+                srcset="@/assets/images/home-hero.png"
+                media="(min-width:576px)"
+              >
+              <img
+                class="hero-img"
+                src="@/assets/images/home-hero-sm.png"
+                alt="hero banner"
+              >
+            </picture>
+          </swiper-slide>
+        </swiper>
+      </ClientOnly>
 
       <div class="hero-wrapper d-flex flex-column justify-content-center align-items-center flex-md-row gap-10 gap-md-20 w-100 position-absolute z-2">
         <div class="d-flex flex-column align-items-center text-center d-md-block text-md-start">
