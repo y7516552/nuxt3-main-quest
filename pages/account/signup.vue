@@ -1,9 +1,9 @@
-<script setup lang="ts"></script>
+<script setup>
+import AccountSignup from '/components/account/AccountSignup.vue';
+</script>
 
 <template>
-  <div>
-    Page: account/signup
-  </div>
+  <AccountSignup/>
 </template>
 
 <style scoped></style>

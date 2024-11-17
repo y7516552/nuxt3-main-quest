@@ -1,9 +1,10 @@
-<script setup lang="ts"></script>
+<script setup>
+import AccountLogin from '/components/account/AccountLogin.vue';
+
+</script>
 
 <template>
-  <div>
-    Page: account/login
-  </div>
+  <AccountLogin/>
 </template>
 
 <style scoped></style>
