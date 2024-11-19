@@ -263,7 +263,7 @@ const isEmailAndPasswordValid = ref(false);
     <p class="mb-0 fs-8 fs-md-7">
       <span class="me-2 text-neutral-0 fw-medium">已經有會員了嗎？</span>
       <NuxtLink
-        to="login"
+        to="/login"
         class="text-primary-100 fw-bold text-decoration-underline bg-transparent border-0"
       >
         <span>立即登入</span>

@@ -2,7 +2,18 @@
 import { Icon } from '@iconify/vue';
 
 const route = useRoute();
+const router = useRouter();
 const { bookingId } = route.params;
+
+const goOrderList = () => {
+  router.push({
+      name: 'user-userId-order',
+      params: {
+        userId: '123'
+      }
+    })
+}
+
 </script>
 
 <template>
@@ -37,6 +48,7 @@ const { bookingId } = route.params;
             <button
               class="btn btn-primary-100 px-md-15 py-4 text-neutral-0 fw-bold border-0 rounded-3"
               type="button"
+              @click="goOrderList"
             >
               前往我的訂單
             </button>

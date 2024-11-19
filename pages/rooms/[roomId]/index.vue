@@ -1,7 +1,7 @@
 <script setup>
 import DatePickerModal from '@/components/rooms/DatePickerModal.vue';
 import { Icon } from '@iconify/vue';
-
+const route = useRoute()
 const datePickerModal = ref(null);
 
 const openModal = () => {
@@ -42,8 +42,10 @@ const handleDateChange = (bookingInfo) => {
 }
 </script>
 
+
 <template>
   <main class="mt-18 mt-md-30 bg-neutral-100">
+    {{ route.params }}
     <section class="p-md-20 bg-primary-10">
       <div
         class="d-none d-md-block position-relative"
@@ -533,7 +535,7 @@ const handleDateChange = (bookingInfo) => {
                 NT$ 10,000
               </h5>
               <NuxtLink
-                :to="{ name: 'booking', params: { roomId: $route.params.roomId } }"
+                :to="{ name: 'rooms-roomId-booking', params: { roomId: $route.params.roomId } }"
                 class="btn btn-primary-100 py-4 text-neutral-0 fw-bold rounded-3"
               >
                 立即預訂
@@ -561,7 +563,7 @@ const handleDateChange = (bookingInfo) => {
             <span class="text-neutral fs-9 fw-medium text-decoration-underline">{{ daysFormatOnMobile(bookingDate.date?.start) }} - {{ daysFormatOnMobile(bookingDate.date?.end) }}</span>
           </div>
           <NuxtLink
-            :to="{ name: 'booking', params: { roomId: $route.params.roomId } }"
+            :to="{ name: 'rooms-roomId-booking', params: { roomId: $route.params.roomId } }"
             class="btn btn-primary-100 px-12 py-4 text-neutral-0 fw-bold rounded-3"
           >
             立即預訂
@@ -570,11 +572,13 @@ const handleDateChange = (bookingInfo) => {
       </div>
     </section>
 
-    <DatePickerModal
-      ref="datePickerModal"
-      :date-time="bookingDate"
-      @handle-date-change="handleDateChange"
-    />
+    <ClientOnly>
+      <DatePickerModal
+        ref="datePickerModal"
+        :date-time="bookingDate"
+        @handle-date-change="handleDateChange"
+      />
+    </ClientOnly>
   </main>
 </template>
 

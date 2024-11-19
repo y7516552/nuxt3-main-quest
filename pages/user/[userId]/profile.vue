@@ -1,6 +1,9 @@
 <script setup >
 const isEditPassword = ref(false);
 const isEditProfile = ref(false);
+definePageMeta({
+  layout: 'user-layout'
+});
 </script>
 
 <template>

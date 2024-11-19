@@ -1,4 +1,5 @@
 <script setup>
+const route = useRoute()
 import BookingLoading from '@/components/rooms/BookingLoading.vue';
 import { Icon } from '@iconify/vue';
 
@@ -15,13 +16,14 @@ const confirmBooking = () => {
   setTimeout(() => {
     isLoading.value = false;
     router.push({
-      name: 'booking-confirmation',
+      name: 'booking-confirmation-bookingId',
       params: {
         bookingId: 'HH2302183151222'
       }
     })
   }, 1500);
 }
+
 </script>
 
 <template>
@@ -628,3 +630,5 @@ $grid-breakpoints: (
 }
 
 </style>
+
+

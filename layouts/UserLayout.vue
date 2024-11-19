@@ -63,7 +63,7 @@
           </li>
         </ul>
         
-        <NuxtPage />
+        <slot />
       </div>
     </section>
 

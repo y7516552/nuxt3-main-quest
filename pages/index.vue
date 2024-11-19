@@ -83,13 +83,13 @@ const onSlideChange = (e) => {
             <p class="text-neutral-40 fw-semibold">
               我們致力於為您提供無與倫比的奢華體驗與優質服務
             </p>
-            <RouterLink 
+            <NuxtLink 
               to="/rooms"
               class="btn btn-neutral-0 d-flex justify-content-end align-items-center gap-3 w-100 text-end text-neutral-100 fs-5 fw-semibold border-0"
             >
               立即訂房
               <div class="cta-deco" />
-            </RouterLink>
+            </NuxtLink>
           </div>
         </div>
       </div>

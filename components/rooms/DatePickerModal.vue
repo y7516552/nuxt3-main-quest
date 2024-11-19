@@ -1,7 +1,8 @@
 <script setup>
 
-import { DatePicker } from 'v-calendar';
-import 'v-calendar/style.css';
+// import { DatePicker } from 'v-calendar';
+// import 'v-calendar/style.css';
+import Modal from 'bootstrap/js/dist/modal';
 import { useScreens } from 'vue-screen-utils';
 
 import { Icon } from '@iconify/vue';
