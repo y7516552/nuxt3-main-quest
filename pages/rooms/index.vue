@@ -12,6 +12,8 @@ import 'swiper/css/pagination';
 
 const modules = ref([Autoplay, Navigation, Pagination]);
 
+// process.env.NODE_ENV === 'development'
+console.log(process.env.NODE_ENV)
 
 // const importImage = (url) => {
 //   const image = new URL(url, import.meta.url);
@@ -24,12 +26,23 @@ const roomImages = computed(() => {
 
   const result = rooms.reduce((acc, roomId) => {
     acc[`room${roomId.toUpperCase()}`] = nums.reduce((obj, num) => {
-      obj[num] = {
-        // desktop: importImage(`/assets/images/room-${roomId}-${num}.png`),
-        // mobile: importImage(`/assets/images/room-${roomId}-sm-${num}.png`)
-        desktop: `_nuxt/assets/images/room-${roomId}-${num}.png`,
-        mobile: `_nuxt/assets/images/room-${roomId}-sm-${num}.png`
-      };
+
+      if(process.env.NODE_ENV === 'development'){
+        obj[num] = {
+          // desktop: importImage(`/assets/images/room-${roomId}-${num}.png`),
+          // mobile: importImage(`/assets/images/room-${roomId}-sm-${num}.png`)
+          desktop: `_nuxt/assets/images/room-${roomId}-${num}.png`,
+          mobile: `_nuxt/assets/images/room-${roomId}-sm-${num}.png`
+        };
+      } else {
+
+        obj[num] = {
+          // desktop: importImage(`/assets/images/room-${roomId}-${num}.png`),
+          // mobile: importImage(`/assets/images/room-${roomId}-sm-${num}.png`)
+          desktop: `_nuxt/room-${roomId}-${num}.png`,
+          mobile: `_nuxt/room-${roomId}-sm-${num}.png`
+        };
+      }
       return obj;
     }, {});
 
