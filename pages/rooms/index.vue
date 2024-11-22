@@ -12,8 +12,7 @@ import 'swiper/css/pagination';
 
 const modules = ref([Autoplay, Navigation, Pagination]);
 
-// process.env.NODE_ENV === 'development'
-console.log(process.env.NODE_ENV)
+
 
 // const importImage = (url) => {
 //   const image = new URL(url, import.meta.url);
