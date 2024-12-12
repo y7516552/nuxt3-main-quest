@@ -1,4 +1,8 @@
 <script setup>
+
+const { sendLoginAuth  } = useLogingStore()
+
+const account = ref({email:"", password:"" })
 </script>
 
 <template>
@@ -12,7 +16,7 @@
       </h1>
     </div>
 
-    <form class="mb-10">
+    <form class="mb-10" @submit.prevent="sendLoginAuth(account)">
       <div class="mb-4 fs-8 fs-md-7">
         <label
           class="mb-2 text-neutral-0 fw-bold"
@@ -21,11 +25,12 @@
           電子信箱
         </label>
         <input
+          v-model="account.email"
           id="email"
           class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
-          value="jessica@sample.com"
           placeholder="請輸入信箱"
           type="email"
+          required
         >
       </div>
       <div class="mb-4 fs-8 fs-md-7">
@@ -36,11 +41,12 @@
           密碼
         </label>
         <input
+          v-model="account.password"
           id="password"
           class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
-          value="jessica@sample.com"
           placeholder="請輸入密碼"
           type="password"
+          required
         >
       </div>
       <div class="d-flex justify-content-between align-items-center mb-10 fs-8 fs-md-7">
@@ -67,7 +73,7 @@
       </div>
       <button
         class="btn btn-primary-100 w-100 py-4 text-neutral-0 fw-bold"
-        type="button"
+        type="submit"
       >
         會員登入
       </button>

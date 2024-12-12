@@ -1,10 +1,11 @@
 <script setup>
-// import { ref, onMounted, onUnmounted, computed } from 'vue';
-// import { RouterLink, useRoute } from 'vue-router'
-import { Icon } from '@iconify/vue';
 
-// import '~bootstrap/js/dist/collapse';
-// import '~bootstrap/js/dist/dropdown';
+import { useLogingStore } from '~/stores/login';
+
+const store = useLogingStore()
+const { checkAuth , getUser, logout } = store
+const {isLogin, loginUser,isLoading} = storeToRefs(store)
+
 
 const route = useRoute();
 const transparentBgRoute = ['home', 'rooms'];
@@ -20,6 +21,8 @@ const handleScroll = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
+  checkAuth()
+  if(isLogin) getUser()
 })
 
 onUnmounted(() => {
@@ -82,7 +85,18 @@ onUnmounted(() => {
                 客房旅宿
               </NuxtLink>
             </li>
-            <li class="d-none d-md-block nav-item">
+            <li  v-if="!isLogin" class="nav-item">
+              <NuxtLink
+                :to="{
+                  name: 'login'
+                }"
+                class="nav-link p-4 text-neutral-0"
+              >
+                <span v-show="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                會員登入
+              </NuxtLink>
+            </li>
+            <li  v-else class="d-none d-md-block nav-item">
               <div class="btn-group">
                 <button
                   type="button"
@@ -93,7 +107,7 @@ onUnmounted(() => {
                     class="fs-5"
                     icon="mdi:account-circle-outline"
                   />
-                  Jessica
+                  {{ loginUser.name }}
                 </button>
                 <ul
                   class="dropdown-menu py-3 overflow-hidden"
@@ -101,10 +115,11 @@ onUnmounted(() => {
                 >
                   <li>
                     <NuxtLink
+                      v-if="loginUser._id"
                       class="dropdown-item px-6 py-4"
                       :to="{
                         name: 'user-userId-profile',
-                        params:{userId:1}
+                        params:{userId:loginUser._id}
                       }"
                     >
                       我的帳戶
@@ -113,16 +128,8 @@ onUnmounted(() => {
                   <li>
                     <a
                       class="dropdown-item px-6 py-4"
-                      href="#"
+                      @click="logout"
                     >登出</a>
-                  </li>
-                  <li >
-                    <NuxtLink
-                      to="/login"
-                      class="nav-link p-4 text-neutral-0"
-                    >
-                      會員登入
-                    </NuxtLink>
                   </li>
                 </ul>
               </div>

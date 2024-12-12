@@ -5,7 +5,6 @@ import 'v-calendar/style.css';
 import Modal from 'bootstrap/js/dist/modal';
 import { useScreens } from 'vue-screen-utils';
 
-import { Icon } from '@iconify/vue';
 
 const modal = ref(null);
 
@@ -32,6 +31,10 @@ const emit = defineEmits(['handleDateChange']);
 const props = defineProps({
   dateTime: {
     type: Object,
+    required: true,
+  },
+  maxPeople:{
+    type:Number,
     required: true,
   }
 })

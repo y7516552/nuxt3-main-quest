@@ -1,7 +1,5 @@
 <script setup>
-import { Icon } from '@iconify/vue';
 
-// import 'bootstrap/js/dist/collapse';
 </script>
 
 <template>

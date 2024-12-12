@@ -1,7 +1,14 @@
 <script setup>
+import AppHeader from '@/components/global/AppHeader';
+import AppFooter from '@/components/global/AppFooter';
+
+const loginStore = useLogingStore();
+const { loginUser } = storeToRefs(loginStore);
+
 </script>
 
 <template>
+  <AppHeader />
   <main class="pt-18 pt-md-30 bg-neutral-120">
     <section class="position-relative">
       <picture>
@@ -24,7 +31,7 @@
             alt="avatar"
           >
           <h1 class="text-neutral-0 fw-bold">
-            Hello，Jessica
+            Hello，{{ loginUser.name }}
           </h1>
         </div>
       </div>
@@ -35,12 +42,7 @@
         <ul class="nav mb-10 mb-md-20 fw-bold">
           <li class="nav-item position-relative">
             <NuxtLink
-              :to="{
-                name: 'user-userId-profile',
-                params: {
-                  userId: $route.params.userId
-                }
-              }"
+              :to="`/user/${loginUser._id}/profile`"
               exact-active-class="text-primary-100"
               class="nav-link px-6 py-4 text-white"
             >
@@ -49,12 +51,7 @@
           </li>
           <li class="nav-item position-relative">
             <NuxtLink
-              :to="{
-                name: 'user-userId-order',
-                params: {
-                  userId: $route.params.userId
-                }
-              }"
+              :to="`/user/${loginUser._id}/order`"
               exact-active-class="text-primary-100"
               class="nav-link px-6 py-4 text-white"
             >
@@ -79,6 +76,7 @@
       >
     </picture>
   </main>
+  <AppFooter />
 </template>
 
 <style lang="scss" scoped>
