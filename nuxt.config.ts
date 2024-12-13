@@ -1,12 +1,18 @@
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }
   },
-  "vite": {
+  vite: {
    "define": {
      "process.env": process.env,
    },
+   vue: {
+    template: {
+      transformAssetUrls,
+    },
+  },
  },
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
@@ -19,7 +25,19 @@ export default defineNuxtConfig({
      }
    ]
   },
-  modules:['@pinia/nuxt','@vee-validate/nuxt'],
+  build: {
+    transpile: ['vuetify'],
+  },
+  modules:[
+    '@pinia/nuxt',
+    '@vee-validate/nuxt',
+    (_options, nuxt) => {
+      nuxt.hooks.hook('vite:extendConfig', (config) => {
+        // @ts-expect-error
+        config.plugins.push(vuetify({ autoImport: true }))
+      })
+    },
+  ],
   veeValidate: {
     // 啟用 auto imports
     autoImports: true,
