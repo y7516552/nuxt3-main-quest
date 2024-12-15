@@ -69,26 +69,6 @@ const openDialog = async (culinary = {}, type = "update") => {
 };
 
 
-// watch(range,() => {
-//   if(form.value) {
-//     const weekString = form.value.values.weekStart+'-'+form.value.values.weekEnd
-//     form.value.setFieldValue('time',diningTimeString(range.value));
-//     form.value.setFieldValue('diningTime',`${weekString} ${diningTimeString(range.value)}`);
-//   }
-// },
-// { immediate: true }
-// )
-
-// watch(form,() => {
-//   if(form.value) {
-//     const weekString = form.value.values.weekStart+'-'+form.value.values.weekEnd
-//     form.value.setFieldValue('time',diningTimeString(range.value));
-//     form.value.setFieldValue('diningTime',`${weekString} ${diningTimeString(range.value)}`);
-//   }
-// },
-// { immediate: true, deep: true }
-// )
-
 const submit = (data) => {
   dialog.value = false;
   const weekString = data.weekStart+'-'+data.weekEnd

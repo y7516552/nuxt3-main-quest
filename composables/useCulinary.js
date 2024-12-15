@@ -83,7 +83,6 @@ export const useCulinary = () => {
       });
       getCulinaryList()
     } catch (error) {
-      console.log(error.response._data)
       await $swal.fire({
         position: "center",
         icon: "error",

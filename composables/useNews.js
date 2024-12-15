@@ -84,7 +84,6 @@ export const useNews = () => {
       });
       getNewsList()
     } catch (error) {
-      console.log(error.response._data)
       await $swal.fire({
         position: "center",
         icon: "error",

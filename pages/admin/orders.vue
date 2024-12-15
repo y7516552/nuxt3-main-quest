@@ -102,7 +102,6 @@ const delelteDialog = ref(false);
 
 const openDialog = async (order = {}, type = "update") => {
   try {
-    console.log(bookingDate);
     bookingDate.value = {start:order.checkInDate, end:order.checkOutDate}
     tempOrder.value = order;
     if (type === "delete") {

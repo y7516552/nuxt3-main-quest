@@ -55,7 +55,6 @@ const openDialog = async (room = {}, type = "update") => {
 };
 const submit = (data) => {
   dialog.value = false;
-  console.log(data);
   if (!data.id) createRoom(data);
   if (data.id) {
     delete data.id;
