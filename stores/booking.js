@@ -2,9 +2,7 @@ import { defineStore } from "pinia";
 const apiUrl = process.env.PUBLIC_API_URL;
 export const useBookingStore = defineStore("bookingStore", () => {
   const { $swal } = useNuxtApp();
-  const cookie = useCookie("auth", {
-    domain: process.env.COOKIE_DOMAIN,
-  });
+  const cookie = useCookie("auth");
   const router = useRouter();
   const roomData = ref([]);
 

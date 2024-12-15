@@ -4,9 +4,7 @@ export const useRooms = () => {
   const { $swal } = useNuxtApp();
   const roomsList = ref([]);
   const isLoading = ref(false);
-  const cookie = useCookie("auth", {
-    domain: process.env.COOKIE_DOMAIN,
-  });
+  const cookie = useCookie("auth");
 
   const getRoomsList = async () => {
     isLoading.value = true;

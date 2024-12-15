@@ -4,9 +4,8 @@ export const useLogingStore = defineStore("login", () => {
   const { $swal } = useNuxtApp();
   const router = useRouter();
   const route = useRoute();
-  const cookie = useCookie("auth", {
-    domain: process.env.COOKIE_DOMAIN,
-  });
+  const cookie = useCookie("auth");
+  
 
   const error_message = ref({
     username: "",
@@ -33,9 +32,10 @@ export const useLogingStore = defineStore("login", () => {
         body: { email, password },
       });
 
+      
       // save token
       cookie.value = { token: res.token };
-
+     
       loginUser.value = res.result;
       if (res.result.role === "admin") isAdmin.value = true;
       isLogin.value = true;

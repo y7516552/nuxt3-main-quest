@@ -4,9 +4,7 @@ export const useOrders = () => {
   const { $swal } = useNuxtApp();
   const orderList = ref([]);
   const isLoading = ref(false);
-  const cookie = useCookie("auth", {
-    domain: process.env.COOKIE_DOMAIN,
-  });
+  const cookie = useCookie("auth");
 
   const getOrderList = async () => {
     isLoading.value = true;

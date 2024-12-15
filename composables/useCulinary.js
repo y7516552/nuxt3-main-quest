@@ -4,9 +4,7 @@ export const useCulinary = () => {
   const { $swal } = useNuxtApp();
   const culinaryList = ref([]);
   const isLoading = ref(false);
-  const cookie = useCookie("auth", {
-    domain: process.env.COOKIE_DOMAIN,
-  });
+  const cookie = useCookie("auth");
 
   const getCulinaryList = async () => {
     isLoading.value = true;

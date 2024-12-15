@@ -4,9 +4,7 @@ definePageMeta({
   layout: "user-layout",
   middleware: ["auth"],
 });
-const cookie = useCookie("auth", {
-  domain: process.env.COOKIE_DOMAIN,
-});
+const cookie = useCookie("auth");
 const showLess = ref(true);
 const bookingStore = useBookingStore();
 const { isLoading, orderOncoming, orders } = storeToRefs(bookingStore);

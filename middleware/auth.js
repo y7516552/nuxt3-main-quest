@@ -1,7 +1,5 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  const cookie = useCookie("auth", {
-    domain: process.env.COOKIE_DOMAIN,
-  });
+  const cookie = useCookie("auth");
   if (!cookie.value) {
     return navigateTo("/login");
   }
