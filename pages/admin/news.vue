@@ -68,40 +68,48 @@ const submitDelete = (id) =>{
           新增
         </button>
       </v-col>
-      <v-col v-for="news in newsList" sm="12" md="4" lg="3">
-        <v-card>
-          <v-img
-            class="mx-auto"
-            height="300"
-            :lazy-src="news.image"
-            max-width="500"
-            :src="news.image"
-          >
-            <template v-slot:placeholder>
-              <div class="d-flex align-center justify-center fill-height">
-                <v-progress-circular
-                  color="grey-lighten-4"
-                  indeterminate
-                ></v-progress-circular>
-              </div>
-            </template>
-          </v-img>
-          <v-card-item>
-            <v-card-title class="font-weight-bold">{{ news.title }}</v-card-title>
-          </v-card-item>
-          <v-card-text>
-            {{ news.description }}
-          </v-card-text>
-          <v-card-actions>
-            <v-btn @click.prevent="openDialog(news)" elevation="12">
-              查看內容
-            </v-btn>
-            <v-btn color="red" variant="flat" @click.prevent="openDialog(news,'delete')" elevation="12">
-              刪除
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
+      <template v-if="newsList.length ==0" >
+        <v-col cols="12" >
+          目前沒有任何最新消息....
+        </v-col>
+      </template>
+      
+      <template v-else>
+        <v-col v-for="news in newsList" sm="12" md="4" lg="3">
+          <v-card>
+            <v-img
+              class="mx-auto"
+              height="300"
+              :lazy-src="news.image"
+              max-width="500"
+              :src="news.image"
+            >
+              <template v-slot:placeholder>
+                <div class="d-flex align-center justify-center fill-height">
+                  <v-progress-circular
+                    color="grey-lighten-4"
+                    indeterminate
+                  ></v-progress-circular>
+                </div>
+              </template>
+            </v-img>
+            <v-card-item>
+              <v-card-title class="font-weight-bold">{{ news.title }}</v-card-title>
+            </v-card-item>
+            <v-card-text>
+              {{ news.description }}
+            </v-card-text>
+            <v-card-actions>
+              <v-btn @click.prevent="openDialog(news)" elevation="12">
+                查看內容
+              </v-btn>
+              <v-btn color="red" variant="flat" @click.prevent="openDialog(news,'delete')" elevation="12">
+                刪除
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </template>
     </v-row>
 
     <v-dialog v-model="dialog" width="auto" persistent>

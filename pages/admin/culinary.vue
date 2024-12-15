@@ -99,50 +99,58 @@ const submitDelete = (id) => {
           新增
         </button>
       </v-col>
-      <v-col v-for="culinary in culinaryList" sm="12" md="4" lg="3">
-        <v-card>
-          <v-img
-            class="mx-auto"
-            height="300"
-            :lazy-src="culinary.image"
-            max-width="500"
-            :src="culinary.image"
-          >
-            <template v-slot:placeholder>
-              <div class="d-flex align-center justify-center fill-height">
-                <v-progress-circular
-                  color="grey-lighten-4"
-                  indeterminate
-                ></v-progress-circular>
-              </div>
-            </template>
-          </v-img>
-          <v-card-item>
-            <v-card-title class="font-weight-bold">{{
-              culinary.title
-            }}</v-card-title>
-          </v-card-item>
-          <v-card-text>
-            {{ culinary.description }}
-          </v-card-text>
-          <v-card-text>
-            {{ culinary.diningTime }}
-          </v-card-text>
-          <v-card-actions>
-            <v-btn @click.prevent="openDialog(culinary)" elevation="12">
-              查看內容
-            </v-btn>
-            <v-btn
-              color="red"
-              variant="flat"
-              @click.prevent="openDialog(culinary, 'delete')"
-              elevation="12"
+      <template v-if="culinaryList ==0" >
+        <v-col cols="12" >
+          目前沒有任何美味佳餚....
+        </v-col>
+      </template>
+
+      <template v-else>
+        <v-col v-for="culinary in culinaryList" sm="12" md="4" lg="3">
+          <v-card>
+            <v-img
+              class="mx-auto"
+              height="300"
+              :lazy-src="culinary.image"
+              max-width="500"
+              :src="culinary.image"
             >
-              刪除
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
+              <template v-slot:placeholder>
+                <div class="d-flex align-center justify-center fill-height">
+                  <v-progress-circular
+                    color="grey-lighten-4"
+                    indeterminate
+                  ></v-progress-circular>
+                </div>
+              </template>
+            </v-img>
+            <v-card-item>
+              <v-card-title class="font-weight-bold">{{
+                culinary.title
+              }}</v-card-title>
+            </v-card-item>
+            <v-card-text>
+              {{ culinary.description }}
+            </v-card-text>
+            <v-card-text>
+              {{ culinary.diningTime }}
+            </v-card-text>
+            <v-card-actions>
+              <v-btn @click.prevent="openDialog(culinary)" elevation="12">
+                查看內容
+              </v-btn>
+              <v-btn
+                color="red"
+                variant="flat"
+                @click.prevent="openDialog(culinary, 'delete')"
+                elevation="12"
+              >
+                刪除
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </template>
     </v-row>
 
     <v-dialog v-model="dialog" width="auto" persistent>

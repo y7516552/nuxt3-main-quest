@@ -1,6 +1,6 @@
 <script setup>
-import { DatePicker } from 'v-calendar';
-import 'v-calendar/style.css';
+import { DatePicker } from "v-calendar";
+import "v-calendar/style.css";
 import { useScreens } from "vue-screen-utils";
 import { ZipCodeMap, cityList } from "~/utils/zipcodes";
 const { isLoading, orderList, getOrderList, updateOrder, deleteOrder } =
@@ -102,7 +102,7 @@ const delelteDialog = ref(false);
 
 const openDialog = async (order = {}, type = "update") => {
   try {
-    bookingDate.value = {start:order.checkInDate, end:order.checkOutDate}
+    bookingDate.value = { start: order.checkInDate, end: order.checkOutDate };
     tempOrder.value = order;
     if (type === "delete") {
       delelteDialog.value = true;
@@ -141,12 +141,12 @@ const openDialog = async (order = {}, type = "update") => {
     console.log(error);
   }
 };
-watch(bookingDate,() => {
-  if(form.value){
-    form.value.setFieldValue('checkInDate',bookingDate.value.start);
-    form.value.setFieldValue('checkOutDate',bookingDate.value.end);
+watch(bookingDate, () => {
+  if (form.value) {
+    form.value.setFieldValue("checkInDate", bookingDate.value.start);
+    form.value.setFieldValue("checkOutDate", bookingDate.value.end);
   }
-})
+});
 
 const submit = (data) => {
   dialog.value = false;
@@ -209,57 +209,62 @@ const submitDelete = (id) => {
         >
           <v-card>
             <v-row>
-              <v-col v-for="order in item.data" sm="12" md="4" lg="3">
-                <v-card>
-                  <v-img
-                    class="mx-auto"
-                    height="300"
-                    :lazy-src="order.roomId.imageUrl"
-                    max-width="500"
-                    :src="order.roomId.imageUrl"
-                  >
-                    <template v-slot:placeholder>
-                      <div
-                        class="d-flex align-center justify-center fill-height"
-                      >
-                        <v-progress-circular
-                          color="grey-lighten-4"
-                          indeterminate
-                        ></v-progress-circular>
-                      </div>
-                    </template>
-                  </v-img>
-
-                  <v-card-item>
-                    <v-card-title class="font-weight-bold">
-                      {{ order.roomId.name }} ，
-                      {{ bookingDays(order.checkInDate, order.checkOutDate) }}晚
-                    </v-card-title>
-                  </v-card-item>
-                  <hr />
-                  <v-card-text> 訂單編號:{{ order._id }} </v-card-text>
-                  <v-card-text>
-                    入住：{{ $dateFormat(order.checkInDate) }}
-                  </v-card-text>
-                  <v-card-text>
-                    退房：{{ $dateFormat(order.checkOutDate) }}
-                  </v-card-text>
-                  <v-card-text> 住宿人數：{{ order.peopleNum }}位 </v-card-text>
-                  <v-card-actions>
-                    <v-btn @click.prevent="openDialog(order)" elevation="12">
-                      查看內容
-                    </v-btn>
-                    <v-btn
-                      color="red"
-                      variant="flat"
-                      @click.prevent="openDialog(order, 'delete')"
-                      elevation="12"
+              <template v-if="item.data == 0">
+                <v-col cols="12"> 目前沒有訂單.... </v-col>
+              </template>
+              <template v-else>
+                <v-col v-for="order in item.data" sm="12" md="4" lg="3">
+                  <v-card>
+                    <v-img
+                      class="mx-auto"
+                      height="300"
+                      :lazy-src="order.roomId.imageUrl"
+                      max-width="500"
+                      :src="order.roomId.imageUrl"
                     >
-                      刪除
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-col>
+                      <template v-slot:placeholder>
+                        <div
+                          class="d-flex align-center justify-center fill-height"
+                        >
+                          <v-progress-circular
+                            color="grey-lighten-4"
+                            indeterminate
+                          ></v-progress-circular>
+                        </div>
+                      </template>
+                    </v-img>
+  
+                    <v-card-item>
+                      <v-card-title class="font-weight-bold">
+                        {{ order.roomId.name }} ，
+                        {{ bookingDays(order.checkInDate, order.checkOutDate) }}晚
+                      </v-card-title>
+                    </v-card-item>
+                    <hr />
+                    <v-card-text> 訂單編號:{{ order._id }} </v-card-text>
+                    <v-card-text>
+                      入住：{{ $dateFormat(order.checkInDate) }}
+                    </v-card-text>
+                    <v-card-text>
+                      退房：{{ $dateFormat(order.checkOutDate) }}
+                    </v-card-text>
+                    <v-card-text> 住宿人數：{{ order.peopleNum }}位 </v-card-text>
+                    <v-card-actions>
+                      <v-btn @click.prevent="openDialog(order)" elevation="12">
+                        查看內容
+                      </v-btn>
+                      <v-btn
+                        color="red"
+                        variant="flat"
+                        @click.prevent="openDialog(order, 'delete')"
+                        elevation="12"
+                      >
+                        刪除
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+              </template>
             </v-row>
           </v-card>
         </v-tabs-window-item>
@@ -312,18 +317,18 @@ const submitDelete = (id) => {
                 </div>
                 <div class="mb-4 fs-8 fs-md-7">
                   <ClientOnly>
-                      <DatePicker
-                        v-model.range.string="bookingDate"
-                        :masks="masks"
-                        :first-day-of-week="1"
-                        :min-date="minDate"
-                        :max-date="maxDate"
-                        :rows="rows"
-                        :columns="columns"
-                        :expanded="expanded"
-                        :title-position="titlePosition"
-                      />
-                    </ClientOnly>
+                    <DatePicker
+                      v-model.range.string="bookingDate"
+                      :masks="masks"
+                      :first-day-of-week="1"
+                      :min-date="minDate"
+                      :max-date="maxDate"
+                      :rows="rows"
+                      :columns="columns"
+                      :expanded="expanded"
+                      :title-position="titlePosition"
+                    />
+                  </ClientOnly>
                 </div>
                 <div>
                   <div class="d-flex flex-wrap gap-2 mb-4">

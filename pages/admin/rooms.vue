@@ -79,53 +79,60 @@ const submitDelete = (id) => {
           新增
         </button>
       </v-col>
-      <v-col v-for="room in roomsList" sm="12" md="6" lg="4">
-        <v-card>
-          <v-img
-            class="mx-auto"
-            height="300"
-            :lazy-src="room.imageUrl"
-            max-width="500"
-            :src="room.imageUrl"
-          >
-            <template v-slot:placeholder>
-              <div class="d-flex align-center justify-center fill-height">
-                <v-progress-circular
-                  color="grey-lighten-4"
-                  indeterminate
-                ></v-progress-circular>
-              </div>
-            </template>
-          </v-img>
-          <v-card-item>
-            <v-card-title class="font-weight-bold">{{
-              room.name
-            }}</v-card-title>
-          </v-card-item>
-          <v-card-item>
-            <div class="my-4 text-subtitle-1">
-              $ {{ room.price.toLocaleString() }}
-            </div>
-          </v-card-item>
-
-          <v-card-text>
-            {{ room.description }}
-          </v-card-text>
-          <v-card-actions>
-            <v-btn @click.prevent="openDialog(room)" elevation="12">
-              查看內容
-            </v-btn>
-            <v-btn
-              color="red"
-              variant="flat"
-              @click.prevent="openDialog(room, 'delete')"
-              elevation="12"
+      <template v-if="roomsList.length ==0" >
+        <v-col cols="12" >
+          目前沒有任何房型....
+        </v-col>
+      </template>
+      <template v-else>
+        <v-col v-for="room in roomsList" sm="12" md="6" lg="4">
+          <v-card>
+            <v-img
+              class="mx-auto"
+              height="300"
+              :lazy-src="room.imageUrl"
+              max-width="500"
+              :src="room.imageUrl"
             >
-              刪除
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
+              <template v-slot:placeholder>
+                <div class="d-flex align-center justify-center fill-height">
+                  <v-progress-circular
+                    color="grey-lighten-4"
+                    indeterminate
+                  ></v-progress-circular>
+                </div>
+              </template>
+            </v-img>
+            <v-card-item>
+              <v-card-title class="font-weight-bold">{{
+                room.name
+              }}</v-card-title>
+            </v-card-item>
+            <v-card-item>
+              <div class="my-4 text-subtitle-1">
+                $ {{ room.price.toLocaleString() }}
+              </div>
+            </v-card-item>
+  
+            <v-card-text>
+              {{ room.description }}
+            </v-card-text>
+            <v-card-actions>
+              <v-btn @click.prevent="openDialog(room)" elevation="12">
+                查看內容
+              </v-btn>
+              <v-btn
+                color="red"
+                variant="flat"
+                @click.prevent="openDialog(room, 'delete')"
+                elevation="12"
+              >
+                刪除
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </template>
     </v-row>
 
     <v-dialog v-model="dialog" width="auto" persistent>
