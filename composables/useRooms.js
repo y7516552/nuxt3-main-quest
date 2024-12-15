@@ -1,11 +1,11 @@
-const apiUrl = process.env.PUBLIC_API_URL;
+const apiUrl = process.env.VITE_PUBLIC_API_URL;
 
 export const useRooms = () => {
   const { $swal } = useNuxtApp();
   const roomsList = ref([]);
   const isLoading = ref(false);
   const cookie = useCookie("auth", {
-    domain: process.COOKIE_DOMAIN,
+    domain: process.VITE_COOKIE_DOMAIN,
   });
 
   const getRoomsList = async () => {

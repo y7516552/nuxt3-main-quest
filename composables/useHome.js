@@ -1,4 +1,4 @@
-const apiUrl = process.env.PUBLIC_API_URL;
+const apiUrl = process.env.VITE_PUBLIC_API_URL;
 
 export const useHome = () => {
   const { $swal } = useNuxtApp();
@@ -51,7 +51,7 @@ export const useHome = () => {
     }
   };
 
-  const roomData = ref({})
+  const roomData = ref({});
 
   const geRoomInfo = async (id) => {
     isLoading.value = true;

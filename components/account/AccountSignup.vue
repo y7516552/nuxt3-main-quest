@@ -1,24 +1,23 @@
 <script setup>
+const apiUrl = process.env.VITE_PUBLIC_API_URL;
 import { ZipCodeMap, cityList } from "~/utils/zipcodes";
-const { signup  } = useLogingStore()
+const { signup } = useLogingStore();
 
+const isEmailExists = ref(false);
 
-const isEmailExists = ref(false)
-
-  const verifyEmail = async (email) => {
-    try {
-      // https://vue-lessons-api.vercel.app
-      const res = await $fetch("/verify/email", {
-        baseURL:process.env.PUBLIC_API_URL,
-        method: "POST",
-        body: { email:email },
-      });
-      isEmailExists.value = res.result.isEmailExists
-    } catch (error) {
-      error_message.value = error.response._data.message
-    } 
+const verifyEmail = async (email) => {
+  try {
+    // https://vue-lessons-api.vercel.app
+    const res = await $fetch("/verify/email", {
+      baseURL: apiUrl,
+      method: "POST",
+      body: { email: email },
+    });
+    isEmailExists.value = res.result.isEmailExists;
+  } catch (error) {
+    error_message.value = error.response._data.message;
   }
-
+};
 
 const isEmailAndPasswordValid = ref(false);
 
@@ -57,7 +56,7 @@ watch(
   { immediate: true }
 );
 
-const agreementCheck = ref(false)
+const agreementCheck = ref(false);
 
 const register = (value) => {
   userData.name = value.name;
@@ -65,7 +64,7 @@ const register = (value) => {
   userData.birthday = value.year + value.month + value.day;
   userData.address.zipcode = value.zipcode;
   userData.address.detail = value.address;
-  signup(userData)
+  signup(userData);
 };
 </script>
 
@@ -135,7 +134,9 @@ const register = (value) => {
             rules="required|email"
             @update:model-value="verifyEmail"
           />
-          <p class="text-light" :class="isEmailExists? '':'d-none'">此Email已註冊</p>
+          <p class="text-light" :class="isEmailExists ? '' : 'd-none'">
+            此Email已註冊
+          </p>
           <VeeErrorMessage class="text-light" name="email" />
         </div>
         <div class="mb-4 fs-8 fs-md-7">
@@ -297,7 +298,12 @@ const register = (value) => {
             :value="true"
             :unchecked-value="false"
           >
-            <input type="checkbox" name="agreementCheck"class="form-check-input" v-model="agreementCheck"  />
+            <input
+              type="checkbox"
+              name="agreementCheck"
+              class="form-check-input"
+              v-model="agreementCheck"
+            />
             <label class="form-check-label fw-bold" for="agreementCheck">
               我已閱讀並同意本網站個資使用規範
             </label>
@@ -306,7 +312,7 @@ const register = (value) => {
         <button
           class="btn btn-primary-100 w-100 py-4 text-neutral-0 fw-bold"
           type="submit"
-          :disabled="!meta.valid||!agreementCheck"
+          :disabled="!meta.valid || !agreementCheck"
         >
           完成註冊
         </button>
