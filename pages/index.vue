@@ -27,20 +27,30 @@ const onSlideChange = (e) => {
 
 const { data: newsData, error: newsError } = await useFetch("/home/news", {
   baseURL: apiUrl,
+  transform: (response) => {
+    const { result } = response;
+    return result;
+  },
 });
 
 const roomsInfo = ref({});
 
 const { data: roomsData, error: roomsError } = await useFetch("/rooms", {
   baseURL: apiUrl,
+  transform: (response) => {
+    const { result } = response;
+    return result;
+  },
 });
 
-roomsInfo.value = roomsData.value.result[0];
+roomsInfo.value = roomsData.value?.[0];
 
-const { data: culinaryData, error: culinaryError } = await useFetch(
-  "/home/culinary",
-  {
+const { data: culinaryData, error: culinaryError } = await useFetch("/home/culinary",{
     baseURL: apiUrl,
+    transform: (response) => {
+      const { result } = response;
+      return result;
+    },
   }
 );
 
@@ -51,7 +61,7 @@ const getDiningTime = (string, index) => {
 
 onMounted(() => {
   const randnum = Math.floor(Math.random() * 3) * 1;
-  roomsInfo.value = roomsData.value.result[randnum];
+  roomsInfo.value = roomsData.value?.[randnum];
 });
 </script>
 
@@ -135,7 +145,7 @@ onMounted(() => {
           </div>
           <div class="col-12 col-md-10 d-flex flex-column gap-10">
             <div
-              v-for="news in newsData.result"
+              v-for="news in newsData"
               :Key="news._id"
               class="card bg-transparent border-0"
             >
@@ -292,7 +302,7 @@ onMounted(() => {
         </div>
         <div class="row flex-nowrap overflow-x-auto">
           <div
-            v-for="culinary in culinaryData.result"
+            v-for="culinary in culinaryData"
             :key="culinary._id"
             class="col-10 col-md-6 col-xl-4"
           >
