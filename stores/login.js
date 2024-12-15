@@ -73,9 +73,9 @@ export const useLogingStore = defineStore("login", () => {
   };
 
   const checkAuth = async () => {
-    isLoading.value = true;
     if (!cookie.value) return;
     try {
+      isLoading.value = true;
       const res = await $fetch("/user/check", {
         baseURL: apiUrl,
         method: "GET",
