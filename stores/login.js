@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-const apiUrl = process.env.PUBLIC_API_URL2;
+const apiUrl = process.env.PUBLIC_API_URL;
 export const useLogingStore = defineStore("login", () => {
   const { $swal } = useNuxtApp();
   const router = useRouter();
@@ -16,6 +16,7 @@ export const useLogingStore = defineStore("login", () => {
   const isLoading = ref(false);
 
   const isLogin = ref(false);
+  const isAdmin = ref(false);
 
   const loginUser = ref({});
 
@@ -36,6 +37,7 @@ export const useLogingStore = defineStore("login", () => {
       cookie.value = { token: res.token };
 
       loginUser.value = res.result;
+      if (res.result.role === "admin") isAdmin.value = true;
       isLogin.value = true;
       if (route.query.isOpen) {
         window.open("", "_self").close();
@@ -142,6 +144,7 @@ export const useLogingStore = defineStore("login", () => {
         },
       });
       loginUser.value = res.result;
+      if (res.result.role === "admin") isAdmin.value = true;
     } catch (error) {
       error_message.value = error.response._data.message;
       await $swal.fire({
@@ -155,6 +158,8 @@ export const useLogingStore = defineStore("login", () => {
       // router.replace({path:'/login'})
       // cookie.value = null
       // isLogin.value = false
+    }finally {
+      isLoading.value = false;
     }
   };
 
@@ -195,6 +200,7 @@ export const useLogingStore = defineStore("login", () => {
   return {
     isLoading,
     isLogin,
+    isAdmin,
     loginUser,
     handleLoading,
     sendLoginAuth,

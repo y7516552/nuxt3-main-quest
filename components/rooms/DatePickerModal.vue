@@ -124,7 +124,6 @@ const clearDate = () => {
     aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-centered m-0 mt-9 mx-md-auto">
-      {{ tempDate }}
       <div
         :class="{'mt-auto': isConfirmDateOnMobile}"
         class="modal-content gap-6 gap-md-10 rounded-3xl"

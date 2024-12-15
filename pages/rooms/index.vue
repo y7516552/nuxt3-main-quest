@@ -10,15 +10,16 @@ import 'swiper/css/pagination';
 
 const modules = ref([Autoplay, Navigation, Pagination]);
 
+const {roomsData, getRooms} = useHome()
 
-const { data:roomsData, error } = await useFetch('/rooms',{
-  baseURL:process.env.PUBLIC_API_URL2
-});
+await getRooms()
+
 
 
 </script>
 
 <template>
+  
   <main>
     <section class="hero position-relative">
       <ClientOnly>
@@ -79,7 +80,7 @@ const { data:roomsData, error } = await useFetch('/rooms',{
         </h2>
         <ul class="d-flex flex-column gap-6 gap-md-12 list-unstyled">
           <li
-            v-for="room in roomsData.result"
+            v-for="room in roomsData"
             :key="room._id"
             class="card flex-lg-row border-0 rounded-3xl overflow-hidden"
           >

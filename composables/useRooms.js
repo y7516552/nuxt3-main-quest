@@ -1,3 +1,5 @@
+const apiUrl = process.env.PUBLIC_API_URL;
+
 export const useRooms = () => {
   const { $swal } = useNuxtApp();
   const roomsList = ref([]);
@@ -10,7 +12,7 @@ export const useRooms = () => {
     isLoading.value = true;
     try {
       const res = await $fetch("/admin/rooms", {
-        baseURL: process.env.PUBLIC_API_URL2,
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
@@ -30,17 +32,16 @@ export const useRooms = () => {
     }
   };
 
-
   const createRoom = async (data) => {
     isLoading.value = true;
     try {
       const res = await $fetch(`/admin/rooms/`, {
-        method:'POST',
-        baseURL: process.env.PUBLIC_API_URL2,
+        method: "POST",
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
-        body:data
+        body: data,
       });
       await $swal.fire({
         position: "center",
@@ -49,7 +50,7 @@ export const useRooms = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      getRoomsList()
+      getRoomsList();
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -64,16 +65,16 @@ export const useRooms = () => {
     }
   };
 
-  const updateRoom = async (id,data) => {
+  const updateRoom = async (id, data) => {
     isLoading.value = true;
     try {
       const res = await $fetch(`/admin/rooms/${id}`, {
-        method:'PUT',
-        baseURL: process.env.PUBLIC_API_URL2,
+        method: "PUT",
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
-        body:data
+        body: data,
       });
       await $swal.fire({
         position: "center",
@@ -82,7 +83,7 @@ export const useRooms = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      getRoomsList()
+      getRoomsList();
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -101,8 +102,8 @@ export const useRooms = () => {
     isLoading.value = true;
     try {
       const res = await $fetch(`/admin/rooms/${id}`, {
-        method:'DELETE',
-        baseURL: process.env.PUBLIC_API_URL2,
+        method: "DELETE",
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
@@ -114,7 +115,7 @@ export const useRooms = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      getRoomsList()
+      getRoomsList();
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -128,7 +129,7 @@ export const useRooms = () => {
       isLoading.value = false;
     }
   };
-  
+
   return {
     isLoading,
     roomsList,

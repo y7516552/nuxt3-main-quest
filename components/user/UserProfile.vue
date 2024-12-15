@@ -163,9 +163,10 @@ const cancelUpdateForm2 = () => {
             ref="form1"
             @submit="updateUserData(form1.values,'password')"
             v-slot="{ meta }"
-            class="d-flex flex-column gap-4 gap-md-6"
             :class="{ 'd-none': !isEditPassword }"
           >
+          <div class="d-flex flex-column gap-4 gap-md-6">
+
             <div>
               <label for="oldPassword" class="form-label fs-8 fs-md-7 fw-bold"
                 >舊密碼</label
@@ -231,6 +232,7 @@ const cancelUpdateForm2 = () => {
                 取消
               </button>
             </div>
+          </div>
           </VeeForm>
         </div>
       </section>
@@ -298,7 +300,7 @@ const cancelUpdateForm2 = () => {
             <VeeErrorMessage class="text-danger" name="phone" />
           </div>
 
-          <div class="fs-8 fs-md-7">
+          <div class="fs-8 fs-md-7" >
             <label
               class="form-label"
               :class="{
@@ -315,44 +317,47 @@ const cancelUpdateForm2 = () => {
               >{{ userData.year }} 年 {{ userData.month }} 月
               {{ userData.day }} 日</span
             >
-            <div class="d-flex gap-2" :class="{ 'd-none': !isEditProfile }">
-              <VeeField
-                name="year"
-                as="select"
-                id="year"
-                class="form-select p-4 text-neutral-80 fw-medium rounded-3"
-                rules="required"
-              >
-                <option
-                  v-for="year in 66"
-                  :key="year"
-                  :value="year+1958"
+            <div :class="{ 'd-none': !isEditProfile }">
+              <div class="d-flex gap-2">
+
+                <VeeField
+                  name="year"
+                  as="select"
+                  id="year"
+                  class="form-select p-4 text-neutral-80 fw-medium rounded-3"
+                  rules="required"
                 >
-                  {{ year + 1958 }} 年
-                </option>
-              </VeeField>
-              <VeeField
-                name="month"
-                as="select"
-                id="month"
-                class="form-select p-4 text-neutral-80 fw-medium rounded-3"
-                rules="required"
-              >
-                <option v-for="month in 12" :key="month" :value="month">
-                  {{ month }} 月
-                </option>
-              </VeeField>
-              <VeeField
-                name="day"
-                as="select"
-                id="day"
-                class="form-select p-4 text-neutral-80 fw-medium rounded-3"
-                rules="required"
-              >
-                <option v-for="day in 30" :key="day" :value="day">
-                  {{ day }} 日
-                </option>
-              </VeeField>
+                  <option
+                    v-for="year in 66"
+                    :key="year"
+                    :value="year+1958"
+                  >
+                    {{ year + 1958 }} 年
+                  </option>
+                </VeeField>
+                <VeeField
+                  name="month"
+                  as="select"
+                  id="month"
+                  class="form-select p-4 text-neutral-80 fw-medium rounded-3"
+                  rules="required"
+                >
+                  <option v-for="month in 12" :key="month" :value="month">
+                    {{ month }} 月
+                  </option>
+                </VeeField>
+                <VeeField
+                  name="day"
+                  as="select"
+                  id="day"
+                  class="form-select p-4 text-neutral-80 fw-medium rounded-3"
+                  rules="required"
+                >
+                  <option v-for="day in 30" :key="day" :value="day">
+                    {{ day }} 日
+                  </option>
+                </VeeField>
+              </div>
             </div>
           </div>
 

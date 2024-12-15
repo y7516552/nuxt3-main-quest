@@ -1,3 +1,5 @@
+const apiUrl = process.env.PUBLIC_API_URL;
+
 export const useOrders = () => {
   const { $swal } = useNuxtApp();
   const orderList = ref([]);
@@ -10,7 +12,7 @@ export const useOrders = () => {
     isLoading.value = true;
     try {
       const res = await $fetch("/admin/orders", {
-        baseURL: process.env.PUBLIC_API_URL2,
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
@@ -20,23 +22,38 @@ export const useOrders = () => {
         (order) => new Date(order.checkInDate) > new Date()
       );
       oncoming.sort(
-        (a, b) =>new Date(a.checkInDate) - new Date(b.checkInDate) ||new Date(a.checkOutDate) - new Date(b.checkOutDate)
+        (a, b) =>
+          new Date(a.checkInDate) - new Date(b.checkInDate) ||
+          new Date(a.checkOutDate) - new Date(b.checkOutDate)
       );
 
-      const  today = res.result.filter(
-        (order) => new Date(order.checkInDate) <= new Date()&& new Date(order.checkOutDate) >= new Date()
+      const today = res.result.filter(
+        (order) =>
+          new Date(order.checkInDate) <= new Date() &&
+          new Date(order.checkOutDate) >= new Date()
       );
       today.sort(
-        (a, b) =>new Date(a.checkInDate) - new Date(b.checkInDate) ||  new Date(a.checkOutDate) - new Date(b.checkOutDate)
+        (a, b) =>
+          new Date(a.checkInDate) - new Date(b.checkInDate) ||
+          new Date(a.checkOutDate) - new Date(b.checkOutDate)
       );
 
       const historyOrders = res.result.filter(
-        (order) => new Date(order.checkInDate) < new Date()&&new Date(order.checkOutDate) < new Date()
+        (order) =>
+          new Date(order.checkInDate) < new Date() &&
+          new Date(order.checkOutDate) < new Date()
       );
       historyOrders.sort(
-        (a, b) =>  new Date(a.checkInDate) - new Date(b.checkInDate) ||  new Date(a.checkOutDate) - new Date(b.checkOutDate)
+        (a, b) =>
+          new Date(a.checkInDate) - new Date(b.checkInDate) ||
+          new Date(a.checkOutDate) - new Date(b.checkOutDate)
       );
-      orderList.value = [{title:'今日',data:today},{title:'即將到來',data:oncoming},{title:'歷史訂單',data:historyOrders},{title:'全部訂單',data:all}]
+      orderList.value = [
+        { title: "今日", data: today },
+        { title: "即將到來", data: oncoming },
+        { title: "歷史訂單", data: historyOrders },
+        { title: "全部訂單", data: all },
+      ];
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -51,18 +68,16 @@ export const useOrders = () => {
     }
   };
 
-  
-
-  const updateOrder = async (id,data) => {
+  const updateOrder = async (id, data) => {
     isLoading.value = true;
     try {
       const res = await $fetch(`/admin/orders/${id}`, {
-        method:'PUT',
-        baseURL: process.env.PUBLIC_API_URL2,
+        method: "PUT",
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
-        body:data
+        body: data,
       });
       await $swal.fire({
         position: "center",
@@ -71,7 +86,7 @@ export const useOrders = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      getOrderList()
+      getOrderList();
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -90,8 +105,8 @@ export const useOrders = () => {
     isLoading.value = true;
     try {
       const res = await $fetch(`/admin/orders/${id}`, {
-        method:'DELETE',
-        baseURL: process.env.PUBLIC_API_URL2,
+        method: "DELETE",
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
@@ -103,7 +118,7 @@ export const useOrders = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      getOrderList()
+      getOrderList();
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -117,7 +132,7 @@ export const useOrders = () => {
       isLoading.value = false;
     }
   };
-  
+
   return {
     isLoading,
     orderList,

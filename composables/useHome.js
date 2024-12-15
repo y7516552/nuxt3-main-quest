@@ -1,18 +1,20 @@
+const apiUrl = process.env.PUBLIC_API_URL;
+
 export const useHome = () => {
   const { $swal } = useNuxtApp();
   const newsList = ref([]);
-  const roomInfo = ref({});
-  const culinaryList =ref([]);
+  const roomsInfo = ref({});
+  const culinaryList = ref([]);
   const isLoading = ref(false);
 
   const getNewsList = async () => {
-    isLoading.value = true
+    isLoading.value = true;
     try {
-      const res = await $fetch('/home/news',{
-        baseURL:process.env.PUBLIC_API_URL2
-      })
-      newsList.value = res.result
-    }catch(error){
+      const res = await $fetch("/home/news", {
+        baseURL: apiUrl,
+      });
+      newsList.value = res.result;
+    } catch (error) {
       await $swal.fire({
         position: "center",
         icon: "error",
@@ -21,20 +23,21 @@ export const useHome = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-    }finally{
-      isLoading.value = false
+    } finally {
+      isLoading.value = false;
     }
-  }
+  };
 
-  const geRandRoomInfo = async () => {
-    isLoading.value = true
+  const roomsData = ref([]);
+
+  const getRooms = async () => {
+    isLoading.value = true;
     try {
-      const randnum = Math.floor(Math.random()*3)*1;
-      const res = await $fetch('/rooms',{
-        baseURL:process.env.PUBLIC_API_URL2
-      })
-      roomInfo.value = res.result[randnum]
-    }catch(error){
+      const res = await $fetch("/rooms", {
+        baseURL: apiUrl,
+      });
+      roomsData.value = res.result;
+    } catch (error) {
       await $swal.fire({
         position: "center",
         icon: "error",
@@ -43,19 +46,42 @@ export const useHome = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-    }finally{
-      isLoading.value = false
+    } finally {
+      isLoading.value = false;
     }
-  }
+  };
+
+  const roomData = ref({})
+
+  const geRoomInfo = async (id) => {
+    isLoading.value = true;
+    try {
+      const res = await $fetch(`/rooms/${id}`, {
+        baseURL: apiUrl,
+      });
+      roomData.value = res.result;
+    } catch (error) {
+      await $swal.fire({
+        position: "center",
+        icon: "error",
+        title: "無法取得房型資料...",
+        text: error.response._data.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } finally {
+      isLoading.value = false;
+    }
+  };
 
   const getCulinaryList = async () => {
-    isLoading.value = true
+    isLoading.value = true;
     try {
-      const res = await $fetch('/home/culinary',{
-        baseURL:process.env.PUBLIC_API_URL2
-      })
-      culinaryList.value = res.result
-    }catch(error){
+      const res = await $fetch("/home/culinary", {
+        baseURL: apiUrl,
+      });
+      culinaryList.value = res.result;
+    } catch (error) {
       await $swal.fire({
         position: "center",
         icon: "error",
@@ -64,10 +90,20 @@ export const useHome = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-    }finally{
-      isLoading.value = false
+    } finally {
+      isLoading.value = false;
     }
-  }
+  };
 
-  return { newsList, isLoading, getNewsList, geRandRoomInfo,getCulinaryList};
-  }
+  return {
+    newsList,
+    isLoading,
+    roomsInfo,
+    roomsData,
+    roomData,
+    getNewsList,
+    getRooms,
+    geRoomInfo,
+    getCulinaryList,
+  };
+};

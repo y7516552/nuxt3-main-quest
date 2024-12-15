@@ -5,21 +5,11 @@ definePageMeta({
 const route = useRoute();
 const router = useRouter();
 const { bookingId } = route.params;
-const cookie = useCookie("auth",{
-    domain:process.COOKIE_DOMAIN
-  })
 
-const { data:orderData, error } = await useFetch(`/orders/${bookingId}`,{
-  baseURL:process.env.PUBLIC_API_URL2,
-  headers:{
-    Authorization: cookie.value?.token
-  }
-});
-if(error.value){ 
-  navigateTo('/rooms')
-}
-const orderInfo = ref({})
-orderInfo.value = orderData.value.result
+const bookingStore = useBookingStore()
+const {getOrdeInfo} = bookingStore
+const {orderData} = storeToRefs(bookingStore)
+await getOrdeInfo(bookingId)
 
 const loginStore = useLogingStore();
 const { getUser } =loginStore
@@ -43,13 +33,13 @@ const countDateDiffs = ({ start, end }) => {
 };
 
 const bookingDays = computed(() =>{
-  const start = orderInfo.value.checkInDate||new Date()
-  const end = orderInfo.value.checkOutDate||new Date()
+  const start = orderData.value?.checkInDate||new Date()
+  const end = orderData.value?.checkOutDate||new Date()
   return countDateDiffs({start,end})
 }) 
 
 const roomPrice = computed(() =>{
-  const price = orderInfo.value.roomId.price||0
+  const price = orderData.value?.roomId.price||0
   return price.toLocaleString()
 })
 
@@ -67,7 +57,7 @@ const roomPrice = computed(() =>{
             />
             <div class="text-neutral-0 fs-1">
               <h1 class="fw-bold">
-                恭喜，{{ orderInfo.userInfo?.name }}！
+                恭喜，{{ orderData.userInfo?.name }}！
               </h1>
               <p class="mb-0 fw-bold">
                 您已預訂成功
@@ -105,19 +95,19 @@ const roomPrice = computed(() =>{
               <p class="mb-2 text-neutral-40 fw-medium">
                 姓名
               </p>
-              <span class="text-neutral-0 fw-bold">{{ orderInfo.userInfo?.name }}</span>
+              <span class="text-neutral-0 fw-bold">{{ orderData.userInfo?.name }}</span>
             </div>
             <div>
               <p class="mb-2 text-neutral-40 fw-medium">
                 手機號碼
               </p>
-              <span class="text-neutral-0 fw-bold">{{ orderInfo.userInfo?.phone }}</span>
+              <span class="text-neutral-0 fw-bold">{{ orderData.userInfo?.phone }}</span>
             </div>
             <div>
               <p class="mb-2 text-neutral-40 fw-medium">
                 電子信箱
               </p>
-              <span class="text-neutral-0 fw-bold">{{ orderInfo.userInfo?.email }}</span>
+              <span class="text-neutral-0 fw-bold">{{ orderData.userInfo?.email }}</span>
             </div>
           </div>
         </div>
@@ -129,7 +119,7 @@ const roomPrice = computed(() =>{
           >
             <div>
               <p class="mb-2 text-neutral-80 fs-8 fs-md-7 fw-medium">
-                預訂參考編號： {{ orderInfo._id }}
+                預訂參考編號： {{ orderData._id }}
               </p>
               <h2 class="mb-0 text-neutral-100 fs-7 fs-md-5 fw-bold">
                 即將來的行程
@@ -138,8 +128,8 @@ const roomPrice = computed(() =>{
 
             <img
               class="img-fluid rounded-3"
-              :src="orderInfo.roomId.imageUrl"
-              :alt="orderInfo.roomId.name"
+              :src="orderData.roomId?.imageUrl"
+              :alt="orderData.roomId?.name"
             >
 
             <section class="d-flex flex-column gap-6">
@@ -152,18 +142,18 @@ const roomPrice = computed(() =>{
                   style="width: 1px;height: 18px;"
                 />
                 <p class="mb-0">
-                  住宿人數： {{ orderInfo.peopleNum }} 位
+                  住宿人數： {{ orderData.peopleNum }} 位
                 </p>
               </h3>
 
               <div class="text-neutral-80 fs-8 fs-md-7 fw-bold">
                 <p class="title-deco mb-2">
-                  入住：{{ $dateFormat(orderInfo.checkInDate)}}，15:00 可入住 
+                  入住：{{ $dateFormat(orderData?.checkInDate)}}，15:00 可入住 
                 </p>
                 <p
                   class="title-deco mb-0"
                 >
-                  退房：{{ $dateFormat(orderInfo.checkOutDate)}}，12:00 前退房
+                  退房：{{ $dateFormat(orderData?.checkOutDate)}}，12:00 前退房
                 </p>
               </div>
 
@@ -179,7 +169,7 @@ const roomPrice = computed(() =>{
                 房內設備
               </h3>
               <ul class="d-flex flex-wrap row-gap-2 column-gap-10 p-6 mb-0 fs-8 fs-md-7 bg-neutral-0 border border-neutral-40 rounded-3 list-unstyled">
-                <li v-for="facility in orderInfo.roomId.facilityInfo" :key="facility.title" class="flex-item d-flex gap-2">
+                <li v-for="facility in orderData.roomId?.facilityInfo" :key="facility.title" class="flex-item d-flex gap-2">
                   <Icon
                     v-if="facility.isProvide"
                     class="fs-5 text-primary-100"
@@ -203,7 +193,7 @@ const roomPrice = computed(() =>{
                 備品提供
               </h3>
               <ul class="d-flex flex-wrap row-gap-2 column-gap-10 p-6 mb-0 fs-8 fs-md-7 bg-neutral-0 border border-neutral-40 rounded-3 list-unstyled">
-                <li v-for="amenity in orderInfo.roomId.amenityInfo" :key="amenity.title" class="flex-item d-flex gap-2">
+                <li v-for="amenity in orderData.roomId?.amenityInfo" :key="amenity.title" class="flex-item d-flex gap-2">
                   <Icon
                     v-if="amenity.isProvide"
                     class="fs-5 text-primary-100"

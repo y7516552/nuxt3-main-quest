@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-const apiUrl = process.env.PUBLIC_API_URL2;
+const apiUrl = process.env.PUBLIC_API_URL;
 export const useBookingStore = defineStore("bookingStore", () => {
   const { $swal } = useNuxtApp();
   const cookie = useCookie("auth", {
@@ -18,7 +18,6 @@ export const useBookingStore = defineStore("bookingStore", () => {
 
       roomData.value = res.result;
     } catch (error) {
-
       await $swal.fire({
         position: "center",
         icon: "error",
@@ -97,19 +96,20 @@ export const useBookingStore = defineStore("bookingStore", () => {
       orderInfo.value = res.result;
       navigateTo(`/booking/confirmation/${res.result._id}`);
     } catch (error) {
-        await $swal.fire({
-            position: "center",
-            icon: "error",
-            title: "無法建立訂單...",
-            text: error.response._data.message,
-            showConfirmButton: false,
-            timer: 1500,
-          });
+      await $swal.fire({
+        position: "center",
+        icon: "error",
+        title: "無法建立訂單...",
+        text: error.response._data.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } finally {
       isLoading.value = false;
     }
   };
 
+  const orderData = ref({});
   const getOrdeInfo = async (id) => {
     isLoading.value = true;
     try {
@@ -120,16 +120,17 @@ export const useBookingStore = defineStore("bookingStore", () => {
           Authorization: cookie.value?.token,
         },
       });
-      orderInfo.value = res.result;
+      orderData.value = res.result;
     } catch (error) {
-        await $swal.fire({
-            position: "center",
-            icon: "error",
-            title: "無法取得訂單資料...",
-            text: error.response._data.message,
-            showConfirmButton: false,
-            timer: 1500,
-          });
+      await $swal.fire({
+        position: "center",
+        icon: "error",
+        title: "無法取得訂單資料...",
+        text: error.response._data.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigateTo("/rooms");
     } finally {
       isLoading.value = false;
     }
@@ -175,6 +176,8 @@ export const useBookingStore = defineStore("bookingStore", () => {
     goBookingPage,
     orderOncoming,
     orders,
+    orderData,
+    getOrdeInfo,
     getOrders,
     createOrder,
     deleteOrder,

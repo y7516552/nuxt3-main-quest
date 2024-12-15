@@ -1,3 +1,5 @@
+const apiUrl = process.env.PUBLIC_API_URL;
+
 export const useCulinary = () => {
   const { $swal } = useNuxtApp();
   const culinaryList = ref([]);
@@ -10,7 +12,7 @@ export const useCulinary = () => {
     isLoading.value = true;
     try {
       const res = await $fetch("/admin/culinary", {
-        baseURL: process.env.PUBLIC_API_URL2,
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
@@ -34,12 +36,12 @@ export const useCulinary = () => {
     isLoading.value = true;
     try {
       const res = await $fetch(`/admin/culinary/`, {
-        method:'POST',
-        baseURL: process.env.PUBLIC_API_URL2,
+        method: "POST",
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
-        body:data
+        body: data,
       });
       await $swal.fire({
         position: "center",
@@ -48,7 +50,7 @@ export const useCulinary = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      getCulinaryList()
+      getCulinaryList();
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -63,16 +65,16 @@ export const useCulinary = () => {
     }
   };
 
-  const updateCulinary = async (id,data) => {
+  const updateCulinary = async (id, data) => {
     isLoading.value = true;
     try {
       const res = await $fetch(`/admin/culinary/${id}`, {
-        method:'PUT',
-        baseURL: process.env.PUBLIC_API_URL2,
+        method: "PUT",
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
-        body:data
+        body: data,
       });
       await $swal.fire({
         position: "center",
@@ -81,7 +83,7 @@ export const useCulinary = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      getCulinaryList()
+      getCulinaryList();
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -100,8 +102,8 @@ export const useCulinary = () => {
     isLoading.value = true;
     try {
       const res = await $fetch(`/admin/culinary/${id}`, {
-        method:'DELETE',
-        baseURL: process.env.PUBLIC_API_URL2,
+        method: "DELETE",
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
@@ -113,7 +115,7 @@ export const useCulinary = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      getCulinaryList()
+      getCulinaryList();
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -127,7 +129,7 @@ export const useCulinary = () => {
       isLoading.value = false;
     }
   };
-  
+
   return {
     isLoading,
     culinaryList,

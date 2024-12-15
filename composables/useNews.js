@@ -1,3 +1,5 @@
+const apiUrl = process.env.PUBLIC_API_URL;
+
 export const useNews = () => {
   const { $swal } = useNuxtApp();
   const newsList = ref([]);
@@ -10,7 +12,7 @@ export const useNews = () => {
     isLoading.value = true;
     try {
       const res = await $fetch("/admin/news", {
-        baseURL: process.env.PUBLIC_API_URL2,
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
@@ -30,17 +32,16 @@ export const useNews = () => {
     }
   };
 
-
   const createNews = async (data) => {
     isLoading.value = true;
     try {
       const res = await $fetch(`/admin/news/`, {
-        method:'POST',
-        baseURL: process.env.PUBLIC_API_URL2,
+        method: "POST",
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
-        body:data
+        body: data,
       });
       await $swal.fire({
         position: "center",
@@ -49,7 +50,7 @@ export const useNews = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      getNewsList()
+      getNewsList();
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -64,16 +65,16 @@ export const useNews = () => {
     }
   };
 
-  const updateNews = async (id,data) => {
+  const updateNews = async (id, data) => {
     isLoading.value = true;
     try {
       const res = await $fetch(`/admin/news/${id}`, {
-        method:'PUT',
-        baseURL: process.env.PUBLIC_API_URL2,
+        method: "PUT",
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
-        body:data
+        body: data,
       });
       await $swal.fire({
         position: "center",
@@ -82,7 +83,7 @@ export const useNews = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      getNewsList()
+      getNewsList();
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -101,8 +102,8 @@ export const useNews = () => {
     isLoading.value = true;
     try {
       const res = await $fetch(`/admin/news/${id}`, {
-        method:'DELETE',
-        baseURL: process.env.PUBLIC_API_URL2,
+        method: "DELETE",
+        baseURL: apiUrl,
         headers: {
           Authorization: cookie.value?.token,
         },
@@ -114,7 +115,7 @@ export const useNews = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      getNewsList()
+      getNewsList();
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -128,7 +129,7 @@ export const useNews = () => {
       isLoading.value = false;
     }
   };
-  
+
   return {
     isLoading,
     newsList,

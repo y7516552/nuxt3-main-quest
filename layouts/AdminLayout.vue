@@ -1,7 +1,8 @@
 <script setup>
 const loginStore = useLogingStore();
-const { loginUser } = storeToRefs(loginStore);
+const { loginUser , isAdmin } = storeToRefs(loginStore);
 if (!loginUser.value.name) loginStore.getUser();
+if(!isAdmin) navigateTo("/")
 const initialName = computed(() => loginUser?.value?.name?.split("")[0]);
 
 const navItems = ref([
@@ -24,6 +25,11 @@ const navItems = ref([
     icon: "mdi-order-bool-descending",
     title: "訂單管理",
     to: "/admin/orders",
+  },
+  {
+    icon: "mdi-home",
+    title: "前台首頁",
+    to: "/",
   },
 ]);
 const overlay = ref(true);
