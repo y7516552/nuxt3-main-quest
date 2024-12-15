@@ -1,4 +1,4 @@
-const apiUrl = process.env.VITE_PUBLIC_API_URL;
+const apiUrl = process.env.PUBLIC_API_URL;
 
 export const useHome = () => {
   const { $swal } = useNuxtApp();

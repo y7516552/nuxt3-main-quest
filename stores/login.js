@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
-const apiUrl = process.env.VITE_PUBLIC_API_URL;
+const apiUrl = process.env.PUBLIC_API_URL;
 export const useLogingStore = defineStore("login", () => {
   const { $swal } = useNuxtApp();
   const router = useRouter();
   const route = useRoute();
   const cookie = useCookie("auth", {
-    domain: process.VITE_COOKIE_DOMAIN,
+    domain: process.env.COOKIE_DOMAIN,
   });
 
   const error_message = ref({

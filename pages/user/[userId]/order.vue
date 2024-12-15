@@ -5,7 +5,7 @@ definePageMeta({
   middleware: ["auth"],
 });
 const cookie = useCookie("auth", {
-  domain: process.VITE_COOKIE_DOMAIN,
+  domain: process.env.COOKIE_DOMAIN,
 });
 const showLess = ref(true);
 const bookingStore = useBookingStore();

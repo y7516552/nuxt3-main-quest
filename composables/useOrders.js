@@ -1,11 +1,11 @@
-const apiUrl = process.env.VITE_PUBLIC_API_URL;
+const apiUrl = process.env.PUBLIC_API_URL;
 
 export const useOrders = () => {
   const { $swal } = useNuxtApp();
   const orderList = ref([]);
   const isLoading = ref(false);
   const cookie = useCookie("auth", {
-    domain: process.VITE_COOKIE_DOMAIN,
+    domain: process.env.COOKIE_DOMAIN,
   });
 
   const getOrderList = async () => {

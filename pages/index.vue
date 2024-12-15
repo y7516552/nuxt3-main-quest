@@ -3,7 +3,7 @@ import Swiper from "../components/swiper/Swiper.vue";
 import SwiperSlide from "../components/swiper/SwiperSlide";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
-const apiUrl = process.env.VITE_PUBLIC_API_URL;
+const apiUrl = process.env.PUBLIC_API_URL;
 
 const modules = ref([Autoplay, Navigation, Pagination]);
 
