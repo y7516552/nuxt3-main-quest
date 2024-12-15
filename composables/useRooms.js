@@ -5,7 +5,7 @@ export const useRooms = () => {
   const roomsList = ref([]);
   const isLoading = ref(false);
   const cookie = useCookie("auth", {
-    domain: process.COOKIE_DOMAIN,
+    domain: process.env.COOKIE_DOMAIN,
   });
 
   const getRoomsList = async () => {
