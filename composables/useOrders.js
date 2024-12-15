@@ -15,7 +15,28 @@ export const useOrders = () => {
           Authorization: cookie.value?.token,
         },
       });
-      orderList.value = res.result;
+      const all = [...res.result];
+      const oncoming = res.result.filter(
+        (order) => new Date(order.checkInDate) > new Date()
+      );
+      oncoming.sort(
+        (a, b) =>new Date(a.checkInDate) - new Date(b.checkInDate) ||new Date(a.checkOutDate) - new Date(b.checkOutDate)
+      );
+
+      const  today = res.result.filter(
+        (order) => new Date(order.checkInDate) <= new Date()&& new Date(order.checkOutDate) >= new Date()
+      );
+      today.sort(
+        (a, b) =>new Date(a.checkInDate) - new Date(b.checkInDate) ||  new Date(a.checkOutDate) - new Date(b.checkOutDate)
+      );
+
+      const historyOrders = res.result.filter(
+        (order) => new Date(order.checkInDate) < new Date()&&new Date(order.checkOutDate) < new Date()
+      );
+      historyOrders.sort(
+        (a, b) =>  new Date(a.checkInDate) - new Date(b.checkInDate) ||  new Date(a.checkOutDate) - new Date(b.checkOutDate)
+      );
+      orderList.value = [{title:'今日',data:today},{title:'即將到來',data:oncoming},{title:'歷史訂單',data:historyOrders},{title:'全部訂單',data:all}]
     } catch (error) {
       await $swal.fire({
         position: "center",
@@ -100,7 +121,7 @@ export const useOrders = () => {
   
   return {
     isLoading,
-    newsList,
+    orderList,
     getOrderList,
     updateOrder,
     deleteOrder,

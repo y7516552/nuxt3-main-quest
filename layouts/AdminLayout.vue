@@ -2,7 +2,7 @@
 const loginStore = useLogingStore();
 const { loginUser } = storeToRefs(loginStore);
 if (!loginUser.value.name) loginStore.getUser();
-const initialName = computed(() => loginUser?.value?.name?.split('')[0])
+const initialName = computed(() => loginUser?.value?.name?.split("")[0]);
 
 const navItems = ref([
   {
@@ -32,17 +32,14 @@ const overlay = ref(true);
   <div>
     <ClientOnly>
       <v-app>
-        <v-navigation-drawer app expand-on-hover rail>
+        <v-navigation-drawer app expand-on-hover rail color="#140f0a">
           <v-list>
-            <v-list-item
-              :subtitle="loginUser.email"
-              :title="loginUser.name"
-            >
-            <template v-slot:prepend>
+            <v-list-item :subtitle="loginUser.email" :title="loginUser.name">
+              <template v-slot:prepend>
                 <v-avatar color="grey-lighten-1">
                   <span class="text-h5">{{ initialName }}</span>
                 </v-avatar>
-            </template>
+              </template>
             </v-list-item>
           </v-list>
 
@@ -53,20 +50,25 @@ const overlay = ref(true);
               v-for="item in navItems"
               :key="item.title"
               :to="item.to"
-              class="text-dark list-items"
+              class="text-white list-items"
             >
               <v-list-item
-                :prepend-icon="item.icon"
                 :title="item.title"
-                color="primary"
-              ></v-list-item>
+                color="#fff"
+              >
+                <template v-slot:prepend>
+                  <v-icon class="opacity-100 text-white" :icon="item.icon" ></v-icon>
+                </template>
+              </v-list-item>
             </NuxtLink>
           </v-list>
         </v-navigation-drawer>
 
-        <v-app-bar app>
+        <v-app-bar app color="#140f0a">
           <!-- -->
-          <v-app-bar-title>後台管理</v-app-bar-title>
+          <v-app-bar-title class="text-h5 font-weight-bold"
+            >享樂酒店</v-app-bar-title
+          >
         </v-app-bar>
 
         <v-main>

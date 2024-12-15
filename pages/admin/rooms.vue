@@ -72,11 +72,11 @@ const submitDelete = (id) => {
 <template>
   <div>
     <div class="mb-4">
-      <h2>房型列表</h2>
+      <h2 class="font-weight-bold">房型</h2>
     </div>
     <v-row>
       <v-col cols="12" class="d-flex">
-        <button type="button" class="btn btn-primary-100" @click="openDialog">
+        <button type="button" class="btn btn-primary-100 text-white" @click="openDialog">
           新增
         </button>
       </v-col>

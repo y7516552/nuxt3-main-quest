@@ -71,12 +71,8 @@ const roomPrice = (price) => {
               class="d-flex align-items-center mb-0 text-neutral-80 fs-8 fs-md-6 fw-bold"
             >
               <p class="mb-0">
-                尊爵雙人房，{{
-                  bookingDays(
-                    orderOncoming[0].checkInDate,
-                    orderOncoming[0].checkOutDate
-                  )
-                }}晚
+                {{orderOncoming[0].roomId.name }} ， 
+                {{bookingDays(orderOncoming[0].checkInDate,orderOncoming[0].checkOutDate)}}晚
               </p>
               <span
                 class="d-inline-block mx-4 bg-neutral-80"
