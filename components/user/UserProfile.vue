@@ -9,6 +9,7 @@ const isLoading = ref(true)
 
 const route = useRoute();
 const userId = route.params.userId
+getUser()
 
 const isAlphanumeric = (string = "") => {
   return string.match(/(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z)]/)
