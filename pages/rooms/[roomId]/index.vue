@@ -6,6 +6,9 @@ const { roomData, geRoomInfo } = useHome()
 const route = useRoute()
 const roomId = route.params.roomId
 
+const bookingStore = useBookingStore()
+const { goBookingPage } = bookingStore
+
 await geRoomInfo(roomId)
 
 const datePickerModal = ref(null);

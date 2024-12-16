@@ -48,7 +48,7 @@ export const useBookingStore = defineStore("bookingStore", () => {
         },
       });
       const oncoming = res.result.filter(
-        (order) => new Date(order.checkInDate) > new Date()
+        (order) => new Date(order.checkInDate) >= new Date() || new Date(order.checkOutDate) >= new Date()
       );
       oncoming.sort(
         (a, b) =>
@@ -57,15 +57,15 @@ export const useBookingStore = defineStore("bookingStore", () => {
       );
       orderOncoming.value = oncoming;
 
-      const historyOrders = res.result.filter(
-        (order) => new Date(order.checkInDate) <= new Date()
-      );
-      historyOrders.sort(
-        (a, b) =>
-          new Date(a.checkInDate) - new Date(b.checkInDate) ||
-          new Date(a.checkOutDate) - new Date(b.checkOutDate)
-      );
-      orders.value = historyOrders;
+      // const historyOrders = res.result.filter(
+      //   (order) => new Date(order.checkInDate) <= new Date() && new Date(order.checkOutDate) < new Date()
+      // );
+      // historyOrders.sort(
+      //   (a, b) =>
+      //     new Date(a.checkInDate) - new Date(b.checkInDate) ||
+      //     new Date(a.checkOutDate) - new Date(b.checkOutDate)
+      // );
+      orders.value = res.result;
     } catch (error) {
       await $swal.fire({
         position: "center",

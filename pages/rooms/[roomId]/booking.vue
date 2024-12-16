@@ -1,18 +1,24 @@
 <script setup>
+import { DatePicker } from "v-calendar";
+import "v-calendar/style.css";
+import { useScreens } from "vue-screen-utils";
 import BookingLoading from "@/components/rooms/BookingLoading.vue";
 import { ZipCodeMap, cityList } from "~/utils/zipcodes";
 
 definePageMeta({
-  middleware: ["auth"]
-})
+  middleware: ["auth"],
+});
 
 const { $swal } = useNuxtApp();
 const bookingStore = useBookingStore();
-const {  isLoading, roomData, bookingInfo } = storeToRefs(bookingStore);
-const { getRoomData,createOrder } = bookingStore;
+const { isLoading, roomData, bookingInfo } = storeToRefs(bookingStore);
+const { getRoomData, createOrder } = bookingStore;
 
 const loginStore = useLogingStore();
 const { loginUser } = storeToRefs(loginStore);
+
+const {roomsData,getRooms} = useHome()
+getRooms()
 
 const route = useRoute();
 const roomId = route.params.roomId;
@@ -27,6 +33,55 @@ if (!bookingInfo.value.checkOutDate) {
     },
   });
 }
+const roomSelected = computed(()=> roomsData.value.find((room) => room._id == bookingInfo.value.roomId))
+const maxPeople = roomSelected?.value?.maxPeople ||4
+
+const generateLocaleDateRange = () => {
+  const currentDate = new Date();
+
+  const startDate = currentDate.toLocaleDateString().replaceAll("/", "-");
+
+  // currentDate 的下一天
+  let endDate = new Date(currentDate);
+  endDate.setDate(currentDate.getDate() + 1);
+  endDate = endDate.toLocaleDateString().replaceAll("/", "-");
+
+  // 明年的同一天
+  const nextYear = new Date(currentDate).setFullYear(
+    currentDate.getFullYear() + 1
+  );
+
+  return {
+    startDate,
+    endDate,
+    nextYear,
+  };
+};
+
+const { startDate, endDate, nextYear } = generateLocaleDateRange();
+
+const bookingDate = ref({
+  start:  bookingInfo.value.checkInDate||startDate,
+  end: bookingInfo.value.checkOutDate||endDate,
+});
+
+const minDate = null;
+const maxDate = new Date(nextYear);
+const masks = {
+  title: "YYYY 年 MM 月",
+  modelValue: "YYYY-MM-DD",
+  input: "YYYY-MM-DD",
+};
+
+const { mapCurrent } = useScreens({
+  md: "768px",
+});
+
+const rows = mapCurrent({ md: 1 }, 2);
+const columns = mapCurrent({ md: 2 }, 1);
+const expanded = mapCurrent({ md: false }, true);
+const titlePosition = mapCurrent({ md: "center" }, "left");
+
 const dateFormat = (value) => {
   const month = new Date(value).getMonth();
   const date = new Date(value).getDate();
@@ -44,15 +99,26 @@ const dateFormat = (value) => {
   return string;
 };
 
+const isRoomIdEdit = ref(false);
+const isDateIdEdit = ref(false);
+const isBookingPeopleIdEdit = ref(false);
+
 const price = bookingInfo.value.price * 1 || 10000;
-const checkInDate = bookingInfo.value.checkInDate || new Date();
-const checkOutDate = bookingInfo.value.checkOutDate || new Date();
-const checkInFormat = dateFormat(checkInDate);
-const checkOutFormat = dateFormat(checkOutDate);
+const checkInDate = ref(bookingInfo.value.checkInDate || new Date());
+const checkOutDate = ref(bookingInfo.value.checkOutDate || new Date());
+const checkInFormat = computed(()=> dateFormat(checkInDate.value));
+const checkOutFormat = computed(()=> dateFormat(checkOutDate.value));
 const daysCount = bookingInfo.value.daysCount * 1 || 1;
 const subtotal = price * daysCount;
 const discount = ref(1000);
 const total = subtotal - discount.value;
+
+watch(bookingDate,() => {
+  bookingInfo.value.checkInDate = bookingDate.value.start
+  bookingInfo.value.checkOutDate = bookingDate.value.end
+  checkInDate.value = bookingDate.value.start
+  checkOutDate.value = bookingDate.value.end
+})
 
 const goBack = () => {
   router.back();
@@ -62,7 +128,7 @@ const goBack = () => {
 const userInfo = ref(null);
 const city = ref("臺北市");
 const zipcodeList = ref([]);
-const countyList = (city) => ZipCodeMap.filter(value => value.name == city);
+const countyList = (city) => ZipCodeMap.filter((value) => value.name == city);
 
 watch(
   city,
@@ -74,38 +140,38 @@ watch(
 );
 
 const getUserAdderss = () => {
-  if (!loginUser.value) return
-  const getCity = ( zipcode ) => ZipCodeMap.find(value => {
-    return value.districts.find(item =>item.zip == zipcode)
-  });
-  const cityObj = getCity(loginUser?.value.address.zipcode)
+  if (!loginUser.value) return;
+  const getCity = (zipcode) =>
+    ZipCodeMap.find((value) => {
+      return value.districts.find((item) => item.zip == zipcode);
+    });
+  const cityObj = getCity(loginUser?.value.address.zipcode);
   const form = {
     name: loginUser?.value.name,
     email: loginUser?.value.email,
     phone: loginUser?.value.phone,
     city: cityObj.name,
     zipcode: loginUser?.value.address.zipcode,
-    address: loginUser?.value.address.detail
-  }
-  userInfo.value.setValues(form)
+    address: loginUser?.value.address.detail,
+  };
+  userInfo.value.setValues(form);
 };
 
 const confirmBooking = () => {
   const userData = {
-    name:userInfo.value.values.name,
-    email:userInfo.value.values.email,
-    phone:userInfo.value.values.phone,
-    address:{
-      zipcode:userInfo.value.values.zipcode,
-      detail:userInfo.value.values.address
-    }
-  }
- 
-  bookingInfo.value.userInfo = userData
-  delete bookingInfo.value.daysCount
+    name: userInfo.value.values.name,
+    email: userInfo.value.values.email,
+    phone: userInfo.value.values.phone,
+    address: {
+      zipcode: userInfo.value.values.zipcode,
+      detail: userInfo.value.values.address,
+    },
+  };
 
-  createOrder(bookingInfo.value)
+  bookingInfo.value.userInfo = userData;
+  delete bookingInfo.value.daysCount;
 
+  createOrder(bookingInfo.value);
 };
 </script>
 
@@ -129,50 +195,141 @@ const confirmBooking = () => {
                 訂房資訊
               </h2>
               <div class="d-flex flex-column gap-6">
-                <div
-                  class="d-flex justify-content-between align-items-center text-neutral-100"
-                >
+                <div :class="{ 'd-none': isRoomIdEdit }">
+                  <div
+                    class="d-flex justify-content-between align-items-center text-neutral-100"
+                  >
+                    <div>
+                      <h3 class="title-deco mb-2 fs-7 fw-bold">選擇房型</h3>
+                      <p class="mb-0 fw-medium">
+                        {{ roomSelected?.name || ''}}
+                      </p>
+                    </div>
+                    <button
+                      class="bg-transparent border-0 fw-bold text-decoration-underline"
+                      type="button"
+                      @click="isRoomIdEdit = !isRoomIdEdit"
+                    >
+                      編輯
+                    </button>
+                  </div>
+                </div>
+
+                <div :class="{ 'd-none': !isRoomIdEdit }">
+                  <div
+                    class="d-flex justify-content-between align-items-center text-neutral-100"
+                  >
                   <div>
-                    <h3 class="title-deco mb-2 fs-7 fw-bold">選擇房型</h3>
-                    <p class="mb-0 fw-medium">
-                      {{ roomData.name }}
-                    </p>
+                    <label for="roomId" class="form-label">選擇房型</label>
+                    <select
+                      v-model="bookingInfo.roomId"
+                      id="roomId"
+                      class="form-select"
+                      aria-label="select roomId"
+                    >
+                      <option v-for="room in roomsData" :value="room._id">{{ room.name  }}</option>
+                    </select>
                   </div>
                   <button
-                    class="bg-transparent border-0 fw-bold text-decoration-underline"
+                    class="btn btn btn-primary-100 text-neutral-0 border-0 fw-bold"
                     type="button"
+                    @click="isRoomIdEdit = !isRoomIdEdit"
                   >
-                    編輯
+                    確定
+                  </button>
+                  </div>
+                </div>
+
+                <div :class="{ 'd-none': isDateIdEdit }">
+                  <div
+                    class="d-flex justify-content-between align-items-center text-neutral-100"
+                  >
+                    <div>
+                      <h3 class="title-deco mb-2 fs-7 fw-bold">訂房日期</h3>
+                      <p class="mb-2 fw-medium">入住：{{ checkInFormat }}</p>
+                      <p class="mb-0 fw-medium">退房：{{ checkOutFormat }}</p>
+                    </div>
+                    <button
+                      class="bg-transparent border-0 fw-bold text-decoration-underline"
+                      type="button"
+                      @click="isDateIdEdit = !isDateIdEdit"
+                    >
+                      編輯
+                    </button>
+                  </div>
+                </div>
+
+                <div :class="{ 'd-none': !isDateIdEdit }">
+                  <div
+                    class="d-flex justify-content-between align-items-center text-neutral-100"
+                  >
+                  <div>
+                    <ClientOnly>
+                      <DatePicker
+                        v-model.range.string="bookingDate"
+                        :masks="masks"
+                        :first-day-of-week="1"
+                        :min-date="minDate"
+                        :max-date="maxDate"
+                        :rows="rows"
+                        :columns="columns"
+                        :expanded="expanded"
+                        :title-position="titlePosition"
+                      />
+                    </ClientOnly>
+                  </div>
+
+                  <button
+                    class="btn btn btn-primary-100 text-neutral-0 border-0 fw-bold"
+                    type="button"
+                    @click="isDateIdEdit = !isDateIdEdit"
+                  >
+                    確定
+                  </button>
+                  </div>
+                </div>
+
+                <div :class="{ 'd-none': isBookingPeopleIdEdit }">
+                  <div
+                    class="d-flex justify-content-between align-items-center text-neutral-100"
+                  >
+                    <div>
+                      <h3 class="title-deco mb-2 fs-7 fw-bold">房客人數</h3>
+                      <p class="mb-0 fw-medium">{{ bookingInfo.peopleNum }} 人</p>
+                    </div>
+                    <button
+                      class="bg-transparent border-0 fw-bold text-decoration-underline"
+                      type="button"
+                      @click="isBookingPeopleIdEdit = !isBookingPeopleIdEdit"
+                    >
+                      編輯
+                    </button>
+                  </div>
+                </div>
+
+                <div :class="{ 'd-none': !isBookingPeopleIdEdit }">
+                  <div
+                    class="d-flex justify-content-between align-items-center text-neutral-100"
+                  >
+                  <div>
+                    <label for="peopleNum" class="form-label">人數</label>
+                    <select
+                      v-model="bookingInfo.peopleNum"
+                      id="peopleNum"
+                      class="form-select"
+                      aria-label="select peopleNum"
+                    >
+                      <option v-for="num in maxPeople" :value="num">{{ num  }} 人</option>
+                    </select>
+                  </div>
+                  <button
+                    class="btn btn btn-primary-100 text-neutral-0 border-0 fw-bold"
+                    type="button"
+                    @click="isBookingPeopleIdEdit = !isBookingPeopleIdEdit"
+                  >
+                    確定
                   </button>
                 </div>
-                <div
-                  class="d-flex justify-content-between align-items-center text-neutral-100"
-                >
-                  <div>
-                    <h3 class="title-deco mb-2 fs-7 fw-bold">訂房日期</h3>
-                    <p class="mb-2 fw-medium">入住：{{ checkInFormat }}</p>
-                    <p class="mb-0 fw-medium">退房：{{ checkOutFormat }}</p>
-                  </div>
-                  <button
-                    class="bg-transparent border-0 fw-bold text-decoration-underline"
-                    type="button"
-                  >
-                    編輯
-                  </button>
-                </div>
-                <div
-                  class="d-flex justify-content-between align-items-center text-neutral-100"
-                >
-                  <div>
-                    <h3 class="title-deco mb-2 fs-7 fw-bold">房客人數</h3>
-                    <p class="mb-0 fw-medium">{{ bookingInfo.peopleNum }} 人</p>
-                  </div>
-                  <button
-                    class="bg-transparent border-0 fw-bold text-decoration-underline"
-                    type="button"
-                  >
-                    編輯
-                  </button>
                 </div>
               </div>
             </section>
