@@ -238,6 +238,7 @@ const submitDelete = (id) => {
                       <v-card-title class="font-weight-bold">
                         {{ order.roomId.name }} ，
                         {{ bookingDays(order.checkInDate, order.checkOutDate) }}晚
+                        <span v-if="order.status == -1" class="badge rounded-pill bg-danger">已取消</span>
                       </v-card-title>
                     </v-card-item>
                     <hr />

@@ -41,6 +41,8 @@ const bookingDate = reactive({
   maxDate: new Date(currentDate.setFullYear(currentDate.getFullYear() + 1))
 });
 
+const bookinTotalPrice = ref(daysCount.value._value * roomData.value.price|| 1* roomData.value.price)
+
 const handleDateChange = (bookingInfo) => {
   const { start, end } = bookingInfo.date;
   bookingDate.date.start = start;
@@ -48,8 +50,8 @@ const handleDateChange = (bookingInfo) => {
 
   bookingPeople.value = bookingInfo?.people || 1;
   daysCount.value = bookingInfo.daysCount;
+  bookinTotalPrice.value = daysCount.value._value * roomData.value.price|| 1* roomData.value.price
 }
-const bookinTotalPrice = computed(()=>daysCount.value._value * roomData.value.price|| 1* roomData.value.price)
 
 const goBooking = () => {
   const bookingData = {
@@ -283,10 +285,10 @@ useSeoMeta({
   
                 <div class="text-neutral-80">
                   <h2 class="fw-bold">
-                    尊爵雙人房
+                    {{ roomData.name }}
                   </h2>
                   <p class="mb-0 fw-medium">
-                    享受高級的住宿體驗，尊爵雙人房提供給您舒適寬敞的空間和精緻的裝潢。
+                    {{ roomData.description }}
                   </p>
                 </div>
   

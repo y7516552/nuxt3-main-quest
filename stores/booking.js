@@ -48,7 +48,7 @@ export const useBookingStore = defineStore("bookingStore", () => {
         },
       });
       const oncoming = res.result.filter(
-        (order) => new Date(order.checkInDate) >= new Date() || new Date(order.checkOutDate) >= new Date()
+        (order) => (new Date(order.checkInDate) >= new Date() || new Date(order.checkOutDate) >= new Date() )&& order.status !== -1
       );
       oncoming.sort(
         (a, b) =>
@@ -82,6 +82,7 @@ export const useBookingStore = defineStore("bookingStore", () => {
 
   const createOrder = async (data) => {
     isLoading.value = true;
+    console.log('create Order')
     try {
       const res = await $fetch(`/orders`, {
         baseURL: apiUrl,
@@ -102,14 +103,12 @@ export const useBookingStore = defineStore("bookingStore", () => {
         showConfirmButton: false,
         timer: 1500,
       });
-    } finally {
       isLoading.value = false;
-    }
+    } 
   };
 
   const orderData = ref({});
   const getOrdeInfo = async (id) => {
-    isLoading.value = true;
     try {
       const res = await $fetch(`/orders/${id}`, {
         baseURL: apiUrl,

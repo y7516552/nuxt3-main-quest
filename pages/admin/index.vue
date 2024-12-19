@@ -16,19 +16,12 @@ const isLooping = ref(false);
       <Swiper
         :modules="modules"
         :slides-per-view="1"
-        :autoplay="{
-          delay: 3000,
-          disableOnInteraction: false,
-        }"
+        :autoplay="false"
         :navigation="{
           enabled:false
         }"
-        :pagination="{
-          el: '.swiper-pagination',
-          type: 'bullets',
-          clickable: true,
-        }"
-        :loop="isLooping"
+        :pagination="false"
+        :loop="false"
       >
         <SwiperSlide
           v-for="num in 5"

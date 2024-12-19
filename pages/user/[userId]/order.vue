@@ -4,7 +4,6 @@ definePageMeta({
   layout: "user-layout",
   middleware: ["auth"],
 });
-const cookie = useCookie("auth");
 const showLess = ref(true);
 const bookingStore = useBookingStore();
 const { isLoading, orderOncoming, orders } = storeToRefs(bookingStore);
@@ -220,6 +219,7 @@ const roomPrice = (price) => {
                       class="d-flex align-items-center mb-0 text-neutral-80 fs-8 fs-md-6 fw-bold"
                     >
                       {{ order.roomId.name }}
+                      <span v-if="order.status == -1" class="badge rounded-pill bg-danger">已取消</span>
                     </h3>
 
                     <div class="text-neutral-80 fw-medium">

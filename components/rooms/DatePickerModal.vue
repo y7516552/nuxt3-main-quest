@@ -1,7 +1,7 @@
 <script setup>
 
 import { DatePicker } from 'v-calendar';
-import 'v-calendar/style.css';
+// import 'v-calendar/style.css';
 import Modal from 'bootstrap/js/dist/modal';
 import { useScreens } from 'vue-screen-utils';
 
@@ -424,6 +424,10 @@ const clearDate = () => {
 .date-picker :deep(.vc-highlight) {
   width: 44px;
   height: 44px;
+}
+
+.date-picker :deep(.vc-highlight-content-solid) {
+  color:#fff;
 }
 
 .date-picker :deep(.vc-attr) {
